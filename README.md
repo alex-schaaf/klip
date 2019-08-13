@@ -9,7 +9,7 @@ A simple Python script that reads in a Kindle clippings text file, sorts through
 The script just needs the input file and an output folder:
 
 ```
-$ python klip.py "./clippings.txt" "./Documents/Clippings/"
+$ python klip.py "./clippings.txt" "./Documents/Clippings"
 
 100%|███████████████████████████████████████████████| 23/23
 ```

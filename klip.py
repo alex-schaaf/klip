@@ -32,7 +32,7 @@ def find(iterable, x) -> list:
     return seps
 
 
-def read_clippings(fp: str, encoding="utf-8-sig") -> list:
+def read_clippings(fp: str, encoding : str = "utf-8-sig") -> list:
     """Read in Kindle clippings text file as bytes, convert to correct string
     format and strip formatting codes.
     
@@ -116,14 +116,13 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
     Args:
         clippings (dict): Dictionary containing clippings.
         path (str): Path of directory to write in.
-        2
+        encoding (str, optional): String encoding. Default: utf-8
+        
     Returns:
         None
     """
-    path = Path(path)
-
     for key, value in tqdm(clippings.items()):
-        authorpath = path / value["author"]
+        authorpath = Path(path) / value["author"]
 
         # check if filepath exists, if not: mkdir
         if not os.path.isdir(authorpath):
@@ -142,11 +141,7 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
                 file.write(title.encode(encoding))
         
         # read existing file to check for duplicate clippings later
-        with open(filepath, "rb") as f:
-            content = str(f.read())
-
-        content = filepath.read_text()
-
+        content = filepath.read_text(encoding=encoding)
         with open(filepath, "a+b") as file:  # append mode
             for page, loc, time, text in zip(value["page"], 
                                              value["loc"], 
