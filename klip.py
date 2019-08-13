@@ -12,6 +12,7 @@ from docopt import docopt
 import os
 from tqdm import tqdm
 import re
+from pathlib import Path
 
 
 def find(iterable, x) -> list:
@@ -118,9 +119,11 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
         2
     Returns:
         None
-    """    
+    """
+    path = Path(path)
+
     for key, value in tqdm(clippings.items()):
-        authorpath = path + "/" + value["author"] + "/"
+        authorpath = path / value["author"]
 
         # check if filepath exists, if not: mkdir
         if not os.path.isdir(authorpath):
@@ -130,7 +133,7 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
         # https://stackoverflow.com/questions/23996118/replace-special-characters-in-a-string-python#23996414
         filename = value["title"].translate(
             {ord(c): " " for c in "!@#$%^&*()[]{};:,./<>?\|`~-=_+"}) + ".md"
-        filepath = authorpath + filename
+        filepath = authorpath / filename
         
         # if file does not exist, create and write book header
         if not os.path.isfile(filepath):
@@ -141,6 +144,8 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
         # read existing file to check for duplicate clippings later
         with open(filepath, "rb") as f:
             content = str(f.read())
+
+        content = filepath.read_text()
 
         with open(filepath, "a+b") as file:  # append mode
             for page, loc, time, text in zip(value["page"], 
@@ -156,7 +161,7 @@ def write_clippings(clippings: dict, path: str, encoding: str = "utf-8") -> None
                     header = "## Page %s | Location %s | %s \n" % (page, loc, time)
                 else:
                     header = "## Location %s | %s \n" % (loc, time)
-                    
+
                 file.write(header.encode(encoding))
                 file.write(text.encode(encoding))
                 file.write(b"\n \n")
