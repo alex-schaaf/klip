@@ -26,6 +26,17 @@ Clippings
     |   Book Z1.md
 ```
 
+With the markdown files being formatted as follows:
+
+```
+# What I Talk About When I Talk About Running (Haruki Murakami)
+
+## Page 2 | Location 26-27 | 28 January 2018 22:26:17 
+No matter how mundane some action might appear, keep at it long enough and it becomes a contemplative, even meditative act.
+
+...
+```
+
 The script automatically checks if clippings already exists and only appends new ones to their respective files.
 
 ## Dependencies
