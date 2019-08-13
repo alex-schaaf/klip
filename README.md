@@ -5,13 +5,16 @@
 A simple Python script that reads in a Kindle clippings text file, sorts through the mess and organizes all clippings into per-book markdown files and saves them into author folders. 
 
 ## Usage
+
+The script just needs the input file and an output folder:
+
 ```
 $ python klip.py "./clippings.txt" "./Documents/Clippings/"
 
 100%|███████████████████████████████████████████████| 23/23
 ```
 
-Will sort everything into the folder structure below:
+This will sort everything into the folder structure below:
 
 ```
 Clippings
