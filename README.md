@@ -34,5 +34,5 @@ The script automatically checks if clippings already exists and only appends new
 * `docopt`
 
 ```
-$ pip install tqdm, docopt
+$ pip install tqdm docopt
 ```
