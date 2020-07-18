@@ -2,7 +2,7 @@ import typer
 import os
 from sys import platform
 from pathlib import Path
-import klip
+import src
 
 
 app = typer.Typer()
@@ -21,9 +21,9 @@ def main(destination: str, verbose: bool = False) -> None:
         typer.echo('No clippings found on connected Kindle.')
         return
 
-    klipings_lines = klip.read_clippings(clippings_file)
-    clippings = klip.sort_clippings(klipings_lines)
-    klip.write_clippings(
+    klipings_lines = src.read_clippings(clippings_file)
+    clippings = src.sort_clippings(klipings_lines)
+    src.write_clippings(
         clippings,
         destination,
         verbose=verbose
