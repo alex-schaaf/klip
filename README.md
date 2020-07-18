@@ -58,7 +58,7 @@ $ pipenv install
 ```
 And run the program
 ```
-$ pipenv run main.py <destination>
+$ pipenv run klip.py <destination>
 ```
 ### Manual
 ```
@@ -66,5 +66,5 @@ $ pip install typer
 ```
 And run the program:
 ```
-$ python main.py <destination>
+$ python klip.py <destination>
 ```
