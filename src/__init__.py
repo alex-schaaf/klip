@@ -1,6 +1,7 @@
 import re
 from pathlib import Path
 import os
+from typing import Iterable, Any
 
 
 def read_clippings(fp: str, encoding: str = "utf-8-sig") -> list:
@@ -20,7 +21,7 @@ def read_clippings(fp: str, encoding: str = "utf-8-sig") -> list:
     return lines
 
 
-def slicer(iterable) -> slice:
+def slicer(iterable: Iterable) -> slice:
     """Iteratively creates slice object from the given iterable containing
     indices.
 
@@ -34,7 +35,7 @@ def slicer(iterable) -> slice:
         yield slice(i, j)
 
 
-def find(iterable, x) -> list:
+def find(iterable: Iterable, x: Any) -> list:
     """Find all occurences of x in given iterable and return indices
 
     Args:
@@ -44,11 +45,11 @@ def find(iterable, x) -> list:
     Returns:
         (list) of indices.
     """
-    seps = []
+    indices = []
     for i, entry in enumerate(iterable):
         if entry == x:
-            seps.append(i)
-    return seps
+            indices.append(i)
+    return indices
 
 
 def sort_clippings(lines: list, seperator: str = "==========") -> dict:
