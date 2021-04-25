@@ -1,29 +1,8 @@
 import subprocess
 import json
-from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, TypedDict
 
-
-@dataclass
-class Drive:
-    letter: str
-    label: str
-    drive_type: str
-
-    @property
-    def is_removable(self) -> bool:
-        return self.drive_type == "Removable Disk"
-
-
-drive_types = {
-    0: "Unknown",
-    1: "No Root Directory",
-    2: "Removable Disk",
-    3: "Local Disk",
-    4: "Network Drive",
-    5: "Compact Disc",
-    6: "RAM Disk",
-}
+Drive = TypedDict("Drive", letter=str, label=str)
 
 
 def list_drives() -> list[Drive]:
@@ -56,20 +35,13 @@ def list_drives() -> list[Drive]:
         Drive(
             letter=d["deviceid"],
             label=d["volumename"],
-            drive_type=drive_types[d["drivetype"]],
         )
         for d in devices
     ]
 
 
-def get_kindle_drive(drives: list[Drive]) -> Optional[Drive]:
+def get_kindle_drive_letter(drives: list[Drive]) -> Optional[Drive]:
     """Return Kindle drive if exists in list of drives."""
     for drive in drives:
-        if drive.label == "Kindle":
-            return drive
-
-
-if __name__ == "__main__":
-    drives = list_drives()
-    kindle_drive = get_kindle_drive(drives)
-    print(kindle_drive)
+        if drive.get("label") == "Kindle":
+            return drive.get("letter")

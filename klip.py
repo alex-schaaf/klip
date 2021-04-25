@@ -29,11 +29,12 @@ def get_kindle_path() -> Optional[Path]:
     """Checks if Kindle device is connected. Also checks for OS, as
     app only works on Linux as of now."""
     if platform == "win32":
-        from src.win import list_drives, get_kindle_drive
+        from src.win import list_drives, get_kindle_drive_letter
 
         drives = list_drives()
-        kindle_drive = get_kindle_drive(drives)
-        return Path(f"{kindle_drive.letter}")
+        kindle_drive_letter = get_kindle_drive_letter(drives)
+        print(kindle_drive_letter)
+        return Path(f"{kindle_drive_letter}")
 
     elif platform == "linux":
         username = os.path.expanduser("~").split("/")[-1]
