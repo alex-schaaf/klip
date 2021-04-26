@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/python-3-blue)
 
-A tiny Python CLI program that reads your book highlights from a connected Kindle device, sorts through the mess and organizes all clippings into per-book markdown files and saves them into author folders at a given destination folder. 
+A tiny Python CLI program that reads your book highlights from a connected Kindle device, sorts through the mess and organizes all clippings into per-book markdown files and saves them into author folders at a given destination folder.
 
 ## Usage
 
@@ -33,7 +33,7 @@ With the markdown files being formatted as follows:
 ```
 # What I Talk About When I Talk About Running (Haruki Murakami)
 
-## Page 2 | Location 26-27 | 28 January 2018 22:26:17 
+## Page 2 | Location 26-27 | 28 January 2018 22:26:17
 No matter how mundane some action might appear, keep at it long enough and it becomes a contemplative, even meditative act.
 
 ...
@@ -44,6 +44,7 @@ The program automatically checks if highlights already exist at the destination 
 ## Installation
 
 First clone this repository using git:
+
 ```
 $ git clone https://github.com/alex-schaaf/klip.git
 ```
@@ -51,20 +52,27 @@ $ git clone https://github.com/alex-schaaf/klip.git
 Then install the dependencies using either the provided `Pipfile` or manually:
 
 ### Pipenv
+
 ```
 $ pip install pipenv
 $ cd klip
 $ pipenv install
 ```
+
 And run the program
+
 ```
 $ pipenv run klip.py <destination>
 ```
+
 ### Manual
+
 ```
 $ pip install typer
 ```
+
 And run the program:
+
 ```
 $ python klip.py <destination>
 ```
