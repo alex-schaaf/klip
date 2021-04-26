@@ -9,7 +9,13 @@ from typing import Optional
 app = typer.Typer()
 
 
-def main(destination: str, verbose: bool = False, json: bool = False) -> None:
+def main(
+    destination: str,
+    verbose: bool = False,
+    json: bool = typer.Option(
+        False, help="Will parse highlights into single JSON file."
+    ),
+) -> None:
     """Syncronize your highlights from a connected Kindle device."""
     kindle_path = get_kindle_path()
     if kindle_path is None:
