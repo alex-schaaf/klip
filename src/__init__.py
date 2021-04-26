@@ -69,9 +69,6 @@ def find(iterable: Iterable, x: Any) -> list:
     return indices
 
 
-from src.model import Highlight
-
-
 def parse_highlights(
     lines: list[str], seperator: str = "=========="
 ) -> list[Highlight]:
