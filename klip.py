@@ -9,7 +9,7 @@ from typing import Optional
 app = typer.Typer()
 
 
-def main(destination: str, verbose: bool = False) -> None:
+def main(destination: str, verbose: bool = False, json: bool = False) -> None:
     """Syncronize your highlights from a connected Kindle device."""
     kindle_path = get_kindle_path()
     if kindle_path is None:
@@ -20,9 +20,13 @@ def main(destination: str, verbose: bool = False) -> None:
         typer.echo("No clippings found on connected Kindle.")
         return
 
-    klipings_lines = src.read_clippings(clippings_file)
-    clippings = src.sort_clippings(klipings_lines)
-    src.write_clippings(clippings, destination, verbose=verbose)
+    clippings_lines = src.read_clippings(clippings_file)
+    if json:
+        highlights = src.parse_highlights(clippings_lines)
+        src.write_highlights_json(highlights, destination)
+    else:
+        clippings = src.sort_clippings(clippings_lines)
+        src.write_clippings(clippings, destination, verbose=verbose)
 
 
 def get_kindle_path() -> Optional[Path]:
