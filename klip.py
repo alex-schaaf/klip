@@ -20,11 +20,12 @@ def main(
     kindle_path = get_kindle_path()
     if kindle_path is None:
         typer.echo("Unable to detect a connected Kindle device.")
+        return
 
     clippings_file = kindle_path / "documents/My Clippings.txt"
     if not os.path.isfile(clippings_file):
         typer.echo("No clippings found on connected Kindle.")
-        return
+        return˛˝
 
     clippings_lines = src.read_clippings(clippings_file)
     if json:
@@ -43,15 +44,22 @@ def get_kindle_path() -> Optional[Path]:
 
         drives = list_drives()
         kindle_drive_letter = get_kindle_drive_letter(drives)
-        print(kindle_drive_letter)
-        return Path(f"{kindle_drive_letter}")
+        path = Path(f"{kindle_drive_letter}")
 
     elif platform == "linux":
         username = os.path.expanduser("~").split("/")[-1]
-        return Path(f"/media/{username}/Kindle/")
+        path = Path(f"/media/{username}/Kindle/")
+
+    elif platform == "darwin":  # macOS
+        path = Path("/Volumes/Kindle/")
+        
+
     else:
         typer.echo(f"{platform} not supported. Current support is linux only.")
+        return
 
+    if os.path.exists(path):
+        return path
 
 if __name__ == "__main__":
     typer.run(main)
