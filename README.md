@@ -49,20 +49,13 @@ First clone this repository using git:
 $ git clone https://github.com/alex-schaaf/klip.git
 ```
 
-Then install the dependencies using either the provided `Pipfile` or manually:
+Then install the dependencies using either the provided `Pipfile` or manually.
 
 ### Pipenv
 
 ```
 $ pip install pipenv
-$ cd klip
 $ pipenv install
-```
-
-And run the program
-
-```
-$ pipenv run klip.py <destination>
 ```
 
 ### Manual
@@ -71,8 +64,15 @@ $ pipenv run klip.py <destination>
 $ pip install typer
 ```
 
-And run the program:
+### Using the CLI
+
+Run the program to export the highlights as sorted markdown files:
 
 ```
 $ python klip.py <destination>
+```
+
+To export the Kindle highlights as JSON run with flag `--json`:
+```
+$ python klip.py <destination> --json
 ```
