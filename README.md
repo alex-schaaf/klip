@@ -1,7 +1,5 @@
 # klip
 
-![](https://img.shields.io/badge/python-3-blue)
-
 A tiny Python CLI program that reads your book highlights from a connected Kindle device, sorts through the mess and organizes all clippings into per-book markdown files and saves them into author folders at a given destination folder.
 
 ## Usage
@@ -55,11 +53,11 @@ uv sync
 Run the program to export the highlights as sorted markdown files:
 
 ```
-python klip.py <destination>
+uv run python klip.py <destination>
 ```
 
 To export the Kindle highlights as JSON run with flag `--json`:
 
 ```
-python klip.py <destination> --json
+uv run python klip.py <destination> --json
 ```
