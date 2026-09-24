@@ -46,22 +46,8 @@ The program automatically checks if highlights already exist at the destination 
 First clone this repository using git:
 
 ```
-$ git clone https://github.com/alex-schaaf/klip.git
-```
-
-Then install the dependencies using either the provided `Pipfile` or manually.
-
-### Pipenv
-
-```
-$ pip install pipenv
-$ pipenv install
-```
-
-### Manual
-
-```
-$ pip install typer
+git clone https://github.com/alex-schaaf/klip.git
+uv sync
 ```
 
 ### Using the CLI
@@ -69,10 +55,11 @@ $ pip install typer
 Run the program to export the highlights as sorted markdown files:
 
 ```
-$ python klip.py <destination>
+python klip.py <destination>
 ```
 
 To export the Kindle highlights as JSON run with flag `--json`:
+
 ```
-$ python klip.py <destination> --json
+python klip.py <destination> --json
 ```

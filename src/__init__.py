@@ -1,19 +1,19 @@
+import itertools
+import json
 import os
 import re
-import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, Any, TypedDict, Optional
+from typing import Any, TypedDict
 
 
-Highlight = TypedDict(
-    "Highlight",
-    author=str,
-    book=str,
-    text=str,
-    timestamp=str,
-    loc=str,
-    page=Optional[str],
-)
+class Highlight(TypedDict):
+    author: str
+    book: str
+    text: str
+    timestamp: str
+    loc: str
+    page: str | None
 
 
 pattern_loc = re.compile(r"location (\d{1,}-\d{1,}|\d{1,})")
@@ -48,7 +48,7 @@ def slicer(iterable: Iterable) -> slice:
     Yields:
         (slice)
     """
-    for i, j in zip(iterable[:-1], iterable[1:]):
+    for i, j in itertools.pairwise(iterable):
         yield slice(i, j)
 
 
@@ -154,7 +154,7 @@ def sort_clippings(lines: list, seperator: str = "==========") -> dict:
     for slice_ in slicer(seperator_locs):
         entry = lines[slice_]
 
-        if entry[1] not in clippings.keys():
+        if entry[1] not in clippings:
             clip = {"highlights": [], "loc": [], "time": [], "page": []}
             clip["author"] = entry[1].split("(")[1][:-1]
             clip["title"] = entry[1].split("(")[0].rstrip()
@@ -208,7 +208,7 @@ def write_clippings(
         # https://stackoverflow.com/questions/23996118/replace-special-characters-in-a-string-python#23996414
         filename = (
             value.get("title").translate(
-                {ord(c): " " for c in "!@#$%^&*()[]{};:,./<>?\|`~-=_+"}
+                {ord(c): " " for c in r"!@#$%^&*()[]{};:,./<>?\|`~-=_+"}
             )
             + ".md"
         )
@@ -239,15 +239,15 @@ def write_clippings(
                     continue
 
                 if page:
-                    header = "## Page %s | Location %s | %s \n" % (page, loc, time)
+                    header = f"## Page {page} | Location {loc} | {time} \n"
                 else:
-                    header = "## Location %s | %s \n" % (loc, time)
+                    header = f"## Location {loc} | {time} \n"
 
                 file.write(header.encode(encoding))
                 file.write(text.encode(encoding))
                 file.write(b"\n \n")
                 sync_counter += 1
 
-    print(f"Sync complete.")
+    print("Sync complete.")
     print(f"Successfuly synced {sync_counter} new highlights to {path}")
     print(f"Skipped {skip_counter} highlights already existing at {path}")

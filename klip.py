@@ -1,10 +1,10 @@
-import typer
 import os
-from sys import platform
 from pathlib import Path
-import src
-from typing import Optional
+from sys import platform
 
+import typer
+
+import src
 
 app = typer.Typer()
 
@@ -25,7 +25,7 @@ def main(
     clippings_file = kindle_path / "documents/My Clippings.txt"
     if not os.path.isfile(clippings_file):
         typer.echo("No clippings found on connected Kindle.")
-        return˛˝
+        return
 
     clippings_lines = src.read_clippings(clippings_file)
     if json:
@@ -36,11 +36,10 @@ def main(
         src.write_clippings(clippings, destination, verbose=verbose)
 
 
-def get_kindle_path() -> Optional[Path]:
-    """Checks if Kindle device is connected. Also checks for OS, as
-    app only works on Linux as of now."""
+def get_kindle_path() -> Path | None:
+    """Checks if Kindle device is connected."""
     if platform == "win32":
-        from src.win import list_drives, get_kindle_drive_letter
+        from src.win import get_kindle_drive_letter, list_drives
 
         drives = list_drives()
         kindle_drive_letter = get_kindle_drive_letter(drives)
@@ -52,14 +51,14 @@ def get_kindle_path() -> Optional[Path]:
 
     elif platform == "darwin":  # macOS
         path = Path("/Volumes/Kindle/")
-        
 
     else:
-        typer.echo(f"{platform} not supported. Current support is linux only.")
+        typer.echo(f"{platform} not supported.")
         return
 
     if os.path.exists(path):
         return path
+
 
 if __name__ == "__main__":
     typer.run(main)

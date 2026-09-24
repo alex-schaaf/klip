@@ -1,8 +1,11 @@
-import subprocess
 import json
-from typing import Optional, TypedDict
+import subprocess
+from typing import TypedDict
 
-Drive = TypedDict("Drive", letter=str, label=str)
+
+class Drive(TypedDict):
+    letter: str
+    label: str
 
 
 def list_drives() -> list[Drive]:
@@ -16,6 +19,7 @@ def list_drives() -> list[Drive]:
         List of Drives
     """
     proc = subprocess.run(
+        check=False,
         args=[
             "powershell",
             "-noprofile",
@@ -40,7 +44,7 @@ def list_drives() -> list[Drive]:
     ]
 
 
-def get_kindle_drive_letter(drives: list[Drive]) -> Optional[Drive]:
+def get_kindle_drive_letter(drives: list[Drive]) -> Drive | None:
     """Return Kindle drive if exists in list of drives."""
     for drive in drives:
         if drive.get("label") == "Kindle":

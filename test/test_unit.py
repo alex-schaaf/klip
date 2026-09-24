@@ -1,4 +1,4 @@
-from src import slicer, find
+from src import find, slicer
 
 
 def test_slicer():
