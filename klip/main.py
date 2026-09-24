@@ -21,12 +21,12 @@ pattern_page = re.compile(r"page \d{1,}")
 pattern_timestamp = re.compile(r"\d{1,2} \D{1,}\d{4} \d{2}\:\d{2}\:\d{2}")
 
 
-def read_clippings(fp: str, encoding: str = "utf-8-sig") -> list:
+def read_clippings(fp: Path, encoding: str = "utf-8-sig") -> list[str]:
     """Read in Kindle clippings text file as bytes, convert to correct string
     format and strip formatting codes.
 
     Args:
-        fp (str): Filepath of the clippings text file.
+        fp (Path): Filepath of the clippings text file.
 
     Returns:
         (list) of lines as strings..
@@ -38,7 +38,7 @@ def read_clippings(fp: str, encoding: str = "utf-8-sig") -> list:
     return lines
 
 
-def slicer(iterable: Iterable) -> slice:
+def _slicer(iterable: Iterable) -> slice:
     """Iteratively creates slice object from the given iterable containing
     indices.
 
@@ -52,7 +52,7 @@ def slicer(iterable: Iterable) -> slice:
         yield slice(i, j)
 
 
-def find(iterable: Iterable, x: Any) -> list:
+def _find(iterable: Iterable, x: Any) -> list[int]:
     """Find all occurences of x in given iterable and return indices
 
     Args:
@@ -62,7 +62,7 @@ def find(iterable: Iterable, x: Any) -> list:
     Returns:
         (list) of indices.
     """
-    indices = []
+    indices: list[int] = []
     for i, entry in enumerate(iterable):
         if entry == x:
             indices.append(i)
@@ -87,10 +87,10 @@ def parse_highlights(
         List of highlights in Highlight dictionary format.
     """
     lines.insert(0, seperator)
-    seperator_locs = find(lines, seperator)
+    seperator_locs = _find(lines, seperator)
     highlights: list[Highlight] = []
 
-    for slice_ in slicer(seperator_locs):
+    for slice_ in _slicer(seperator_locs):
         highlight_raw = lines[slice_]
 
         title = highlight_raw[1].split("(")[0].rstrip()
@@ -136,7 +136,7 @@ def write_highlights_json(highlights: list[Highlight], destination: Path) -> Non
         json.dump(highlights, file, indent=4)
 
 
-def sort_clippings(lines: list, seperator: str = "==========") -> dict:
+def sort_clippings(lines: list[str], seperator: str = "==========") -> dict:
     """Sort clippings in given list of lines clippings.
 
     Args:
@@ -148,10 +148,10 @@ def sort_clippings(lines: list, seperator: str = "==========") -> dict:
         (dict)
     """
     lines.insert(0, seperator)
-    seperator_locs = find(lines, seperator)
+    seperator_locs = _find(lines, seperator)
     clippings = {}
 
-    for slice_ in slicer(seperator_locs):
+    for slice_ in _slicer(seperator_locs):
         entry = lines[slice_]
 
         if entry[1] not in clippings:
@@ -234,8 +234,6 @@ def write_clippings(
                 # check if clipping already in file
                 if time in content:
                     skip_counter += 1
-                    # if verbose:
-                    #     print(f"Highlight from '{key}' already exists in destionaion, skipping.")
                     continue
 
                 if page:

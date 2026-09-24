@@ -4,7 +4,8 @@ from sys import platform
 
 import typer
 
-import src
+import klip.main as klip
+from klip.operating_systems import windows
 
 app = typer.Typer()
 
@@ -27,22 +28,20 @@ def main(
         typer.echo("No clippings found on connected Kindle.")
         return
 
-    clippings_lines = src.read_clippings(clippings_file)
+    clippings_lines = klip.read_clippings(clippings_file)
     if json:
-        highlights = src.parse_highlights(clippings_lines)
-        src.write_highlights_json(highlights, destination)
+        highlights = klip.parse_highlights(clippings_lines)
+        klip.write_highlights_json(highlights, destination)
     else:
-        clippings = src.sort_clippings(clippings_lines)
-        src.write_clippings(clippings, destination, verbose=verbose)
+        clippings = klip.sort_clippings(clippings_lines)
+        klip.write_clippings(clippings, destination, verbose=verbose)
 
 
 def get_kindle_path() -> Path | None:
     """Checks if Kindle device is connected."""
     if platform == "win32":
-        from src.win import get_kindle_drive_letter, list_drives
-
-        drives = list_drives()
-        kindle_drive_letter = get_kindle_drive_letter(drives)
+        drives = windows.list_drives()
+        kindle_drive_letter = windows.get_kindle_drive_letter(drives)
         path = Path(f"{kindle_drive_letter}")
 
     elif platform == "linux":
